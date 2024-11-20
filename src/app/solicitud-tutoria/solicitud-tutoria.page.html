@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Solicitud de Tutoría</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (submit)="solicitarTutoria()">
+    <ion-item>
+      <ion-label>Nombre del Solicitante</ion-label>
+      <ion-input type="text" [value]="solicitanteNombre" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Asignatura</ion-label>
+      <ion-select [(ngModel)]="asignaturaSeleccionada" name="asignatura" placeholder="Seleccionar asignatura">
+        <ion-select-option value="Inglés Intermedio II">Inglés Intermedio II</ion-select-option>
+        <ion-select-option value="Programación">Programación</ion-select-option>
+        <ion-select-option value="Matemáticas">Matemáticas</ion-select-option>
+        <!-- Añadir más asignaturas según sea necesario -->
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Franja Horaria</ion-label>
+      <ion-select [(ngModel)]="franjaHorariaSeleccionada" name="franjaHoraria" placeholder="Seleccionar horario">
+        <ion-select-option value="Mañana">Mañana</ion-select-option>
+        <ion-select-option value="Tarde">Tarde</ion-select-option>
+        <ion-select-option value="Noche">Noche</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Mensaje</ion-label>
+      <ion-textarea [(ngModel)]="mensajeInteres" name="mensaje" placeholder="Escribe por qué te interesa la tutoría..."></ion-textarea>
+    </ion-item>
+
+    <ion-button type="submit" expand="block">Solicitar Tutoría</ion-button>
+  </form>
+</ion-content>

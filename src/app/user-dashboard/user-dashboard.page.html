@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar class="dashboard-masivo">
+    <ion-title>ConectaTutor</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="vistaActual" (ionChange)="onSegmentChange($event)">
+    <ion-segment-button value="alumno">
+      Alumno
+    </ion-segment-button>
+    <ion-segment-button value="tutor">
+      Tutor
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Sección Alumno -->
+  <div *ngIf="vistaActual === 'alumno'">
+    <div *ngFor="let tutoria of tutorias">
+      <ion-card *ngIf="tutoria.estado === 'disponible'">
+        <ion-card-header>
+          <ion-card-title>{{ tutoria.asignatura }}</ion-card-title>
+          <ion-card-subtitle>Franja Horaria: {{ tutoria.franjaHoraria }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Tutor:</strong> {{ tutoria.tutor }}</p>
+          <div style="display: flex; justify-content: space-between;">
+            <ion-button color="primary" (click)="meInteresa(tutoria)">Me interesa</ion-button>
+            <ion-button color="danger" (click)="noMeInteresa(tutoria)">No me interesa</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Botón flotante para solicitar una tutoría -->
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button (click)="irASolicitudTutoria()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+  <!-- Sección Tutor -->
+  <div *ngIf="vistaActual === 'tutor'">
+    <ion-label>
+      <h1 class="titulo">Bienvenido Tutor</h1>
+    </ion-label>
+
+    <div *ngFor="let solicitud of solicitudes">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ solicitud.solicitanteNombre }}</ion-card-title>
+          <ion-card-subtitle>{{ solicitud.franjaHoraria }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Asignatura: {{ solicitud.asignatura }}</p>
+          <div style="display: flex; justify-content: space-between;">
+            <ion-button color="success" (click)="aceptarSolicitud(solicitud)">Aceptar</ion-button>
+            <ion-button color="danger" (click)="rechazarSolicitud(solicitud)">Rechazar</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Botón flotante para agregar tutoría -->
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button (click)="irAgregarTutoria()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>

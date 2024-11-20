@@ -1,0 +1,145 @@
+{
+  "users": [
+    {
+      "nombre": "Yuliana Katalina",
+      "carrera": "Ingeniería Informática",
+      "jornada": "Diurna",
+      "correo": "yu.roman@correo.com",
+      "telefono": "999333",
+      "nombreSocial": "yulis",
+      "foto": null,
+      "id": "2aa1",
+      "username": "yu.roman"
+    },
+    {
+      "nombre": "Arlette Joseline Martínez",
+      "carrera": "Ingeniería Informática",
+      "jornada": "Diurna",
+      "correo": "ar.martinez@correo.com",
+      "telefono": "987654321",
+      "nombreSocial": "yos",
+      "foto": null,
+      "id": "0328",
+      "username": "ar.martinez"
+    },
+    {
+      "nombre": "Nicolás Alexander Fernández",
+      "carrera": "Ingeniería Informática",
+      "jornada": "Diurna",
+      "correo": "nico.fdz@correo.com",
+      "telefono": "543216789",
+      "nombreSocial": "Nico",
+      "foto": null,
+      "id": "1aa0",
+      "username": "nico.fdz"
+    }
+  ],
+  "solicitudes": [
+    {
+      "id": "ccce",
+      "asignatura": "Programación",
+      "franjaHoraria": "Mañana",
+      "mensajeInteres": "s",
+      "solicitanteId": "0328",
+      "solicitanteNombre": "Arlette Joseline Martínez",
+      "estado": "rechazada"
+    },
+    {
+      "id": "cf81",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "Tarde",
+      "mensajeInteres": "a",
+      "solicitanteId": "0328",
+      "solicitanteNombre": "Arlette Joseline Martínez",
+      "estado": "aceptada"
+    },
+    {
+      "id": "ab92",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "Noche",
+      "mensajeInteres": "a",
+      "solicitanteId": "0328",
+      "solicitanteNombre": "Arlette Joseline Martínez",
+      "estado": "aceptada"
+    },
+    {
+      "id": "3ce2",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "Tarde",
+      "mensajeInteres": "l",
+      "solicitanteId": "2aa1",
+      "solicitanteNombre": "Yu Roman",
+      "estado": "aceptada"
+    },
+    {
+      "id": "7540",
+      "asignatura": "Programación",
+      "franjaHoraria": "Mañana",
+      "mensajeInteres": "a",
+      "solicitanteId": "2aa1",
+      "solicitanteNombre": "Yu Roman",
+      "estado": "aceptada"
+    },
+    {
+      "id": "c15d",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "Tarde",
+      "mensajeInteres": "s",
+      "solicitanteId": "2aa1",
+      "solicitanteNombre": "Yu Roman",
+      "estado": "aceptada"
+    },
+    {
+      "id": "411f",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "Noche",
+      "mensajeInteres": "s",
+      "solicitanteId": "2aa1",
+      "solicitanteNombre": "Yu Roman",
+      "estado": "aceptada"
+    },
+    {
+      "id": "788f",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "Noche",
+      "mensajeInteres": "s",
+      "solicitanteId": "0328",
+      "solicitanteNombre": "Yu Roman",
+      "estado": "aceptada"
+    },
+    {
+      "id": "3249",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "Mañana",
+      "mensajeInteres": "s",
+      "solicitanteId": "0328",
+      "solicitanteNombre": "Yu Roman",
+      "estado": "pendiente"
+    }
+  ],
+  "tutorias": [
+    {
+      "id": "42f2",
+      "tutor": "Arlette Martinez",
+      "asignatura": "Programación",
+      "franjaHoraria": "Mañana",
+      "estado": "interesado"
+    },
+    {
+      "id": "411f",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "Noche",
+      "tutor": "Yu Roman",
+      "tutorId": "2aa1",
+      "estado": "interesado"
+    },
+    {
+      "id": "788f",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "Noche",
+      "tutor": "Yu Roman",
+      "tutorId": "0328",
+      "estado": "interesado"
+    }
+  ]
+}

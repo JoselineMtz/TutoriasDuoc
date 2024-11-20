@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content">
+  <form (ngSubmit)="guardarPerfil()">
+    <!-- Avatar para mostrar la foto de perfil -->
+    <ion-item lines="none" class="ion-text-center">
+      <ion-avatar>
+        <img *ngIf="fotoPerfil" [src]="fotoPerfil" alt="Foto de perfil" />
+
+      </ion-avatar>
+    </ion-item>
+
+    <!-- Botón para tomar una foto con la cámara -->
+    <ion-item>
+      <ion-button expand="full" (click)="tomarFoto()">Tomar Foto</ion-button>
+    </ion-item>
+
+    <!-- Botón para seleccionar una foto desde la galería -->
+    <ion-item>
+      <ion-button expand="full" (click)="seleccionarFoto()">Seleccionar Foto de la Galería</ion-button>
+    </ion-item>
+
+    <!-- Otros campos de perfil -->
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="nombre" name="nombre" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Carrera</ion-label>
+      <ion-input type="text" [(ngModel)]="carrera" name="carrera" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Jornada</ion-label>
+      <ion-input type="text" [(ngModel)]="jornada" name="jornada" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input type="email" [(ngModel)]="correo" name="correo" required></ion-input>
+    </ion-item>
+
+    <!-- Campo para el número de teléfono -->
+    <ion-item>
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input type="tel" [(ngModel)]="telefono" name="telefono"></ion-input>
+    </ion-item>
+
+    <!-- Campo para el nombre social -->
+    <ion-item>
+      <ion-label position="floating">Me gusta que me llamen</ion-label>
+      <ion-input type="text" [(ngModel)]="nombreSocial" name="nombreSocial" required></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">Guardar</ion-button>
+  </form>
+</ion-content>

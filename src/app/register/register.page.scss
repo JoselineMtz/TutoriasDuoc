@@ -1,0 +1,38 @@
+.logo {
+    width: 100px; /* Ajusta el tamaño del logo según sea necesario */
+    height: auto;
+    margin-right: auto; /* Alinea el logo a la izquierda */
+  }
+  
+  ion-header {
+    --background: #2b45bd; /* Cambia el color de fondo del header */
+  }
+  
+  ion-toolbar {
+    --background: #363fc2; /* Cambia el color de fondo del toolbar si es necesario */
+  }
+  ion-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+  }
+  
+  .ion-text-center {
+    text-align: center; /* Centra el texto dentro de los elementos */
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column; /* Alinea los botones en una columna */
+    align-items: center; /* Centra los botones horizontalmente */
+    width: 100%;
+    max-width: 400px; /* Ajusta el ancho máximo del contenedor si es necesario */
+  }
+  
+  ion-button {
+    width: 100%;
+    max-width: 300px; /* Ajusta el ancho máximo de los botones si es necesario */
+    margin-top: 10px; /* Espacio entre los botones */
+  }
+  

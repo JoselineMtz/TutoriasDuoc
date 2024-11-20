@@ -25,3 +25,29 @@
 #container a {
   text-decoration: none;
 }
+.custom-button {
+  --background:  #d7ebff; /* Cambia esto al color que desees */
+  --background-activated: #388e3c; /* Color al presionar el botón */
+  --background-focused: #66bb6a; /* Color al enfocar el botón */
+  --color: rgb(0, 0, 0); /* Color del texto */
+}
+.custom-content {
+  margin-top: 70px !important; /* Ajusta el valor según el espacio que desees */
+}
+
+.image-container {
+  text-align: center; /* Centra la imagen horizontalmente */
+  margin-bottom: 20px; /* Ajusta el espacio debajo de la imagen */
+}
+
+.image-container img {
+  max-width: 100%; /* Ajusta el tamaño máximo de la imagen */
+  height: auto; /* Mantiene la proporción de la imagen */
+}
+ion-toolbar {
+  --background: #fdb548; /* Cambia el color de fondo del toolbar si es necesario */
+}
+
+ion-item {
+  --background: none;
+}

@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "userId": "1",
+      "username": "yu.roman",
+      "password": "passyu",
+      "role": "alumno",
+      "fullName": "Yu Roman"
+    },
+    {
+      "userId": "2",
+      "username": "ar.martinez",
+      "password": "passar",
+      "role": "tutor",
+      "fullName": "Arlette Martinez"
+    },
+    {
+      "userId": "3",
+      "username": "nico.fdz",
+      "password": "passni",
+      "role": ["alumno", "tutor"],
+      "fullName": "Nico Fernandez"
+    }
+  ]
+}

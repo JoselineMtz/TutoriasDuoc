@@ -1,0 +1,31 @@
+:host {
+  ion-content {
+    --background: #2b45bd; /* Color de fondo de la pantalla de carga */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ocupa toda la altura de la vista */
+    padding: 0; /* Elimina el padding */
+    margin: 0; /* Elimina el margin */
+    background-color: #2b45bd !important; /* Fuerza el color de fondo */
+  }
+
+  .splash-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%; /* Ocupa toda la altura del contenedor */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+  }
+
+  .logo {
+    width: 150px; /* Ajusta el tamaño de la imagen según sea necesario */
+    margin-bottom: 20px; /* Espacio entre la imagen y el spinner */
+  }
+
+  .spinner {
+    color: #ffffff; /* Color del spinner */
+  }
+}
