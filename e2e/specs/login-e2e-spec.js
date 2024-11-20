@@ -21,5 +21,5 @@ it('debería cargar la página de inicio correctamente', async () => {
   expect(url).toContain('/user-dashboard');
 
   // Mensaje en la consola al final
-  console.log('✅ Prueba exitosa: La redirección al dashboard se realizó correctamente.');
+  console.log('✅ Prueba exitosa: La redirección al dashboard de inicio se realizó correctamente.');
 });
