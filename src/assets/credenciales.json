@@ -5,7 +5,7 @@
       "username": "yu.roman",
       "password": "passyu",
       "role": "alumno",
-      "fullName": "Yu Roman"
+      "fullName": "Yuliana Roman Roman"
     },
     {
       "userId": "2",
@@ -19,7 +19,7 @@
       "username": "nico.fdz",
       "password": "passni",
       "role": ["alumno", "tutor"],
-      "fullName": "Nico Fernandez"
+      "fullName": "Nicolas Fernandez"
     }
   ]
 }
