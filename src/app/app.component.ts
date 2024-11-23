@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       // Esperar a que la animación de splash termine
       setTimeout(() => {
-        this.router.navigateByUrl('/seleccion-rol');
+        this.router.navigateByUrl('/home');
       }, 3000); // Debe coincidir con el tiempo de duración del splash
     });
   }

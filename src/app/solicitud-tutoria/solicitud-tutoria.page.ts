@@ -4,9 +4,8 @@ import { AlertController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service'; // Asegúrate de que la ruta sea correcta
 
-// Definir la interfaz para una solicitud de tutoría
 interface Solicitud {
-  id?: string; 
+  id?: string;
   asignatura: string;
   franjaHoraria: string;
   mensajeInteres: string;
@@ -24,15 +23,15 @@ export class SolicitudTutoriaPage implements OnInit {
   asignaturaSeleccionada: string = '';
   franjaHorariaSeleccionada: string = '';
   mensajeInteres: string = '';
-  solicitanteNombre: string = ''; // Variable para el nombre del solicitante
+  solicitanteNombre: string = ''; 
+  solicitanteId: string = ''; // Nueva variable para almacenar el ID del solicitante
 
   constructor(
     private router: Router,
     private alertController: AlertController,
     private http: HttpClient,
-    private authService: AuthService // Servicio de autenticación
+    private authService: AuthService
   ) {
-    // Suscribirse al cambio de usuario para actualizar los datos dinámicamente
     this.authService.userChanged.subscribe(() => {
       this.resetForm();
       this.ngOnInit();
@@ -40,37 +39,36 @@ export class SolicitudTutoriaPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.resetForm(); // Restablecer las variables del formulario
+    this.resetForm();
+
     try {
-      // Obtener detalles del usuario autenticado
       const usuario = await this.authService.getUserDetails();
       if (usuario) {
-        this.solicitanteNombre = usuario.fullName || usuario.username; // Preferir fullName si existe
-        console.log('Nombre del solicitante:', this.solicitanteNombre);
+        this.solicitanteNombre = usuario.fullName || usuario.username; 
+        this.solicitanteId = usuario.username; // Asegura que se use el ID correcto del usuario autenticado
+        console.log('Solicitante:', { nombre: this.solicitanteNombre, id: this.solicitanteId });
       } else {
         throw new Error('No se pudo obtener el usuario autenticado.');
       }
     } catch (error) {
       console.error('Error en ngOnInit:', error);
-      await this.presentAlert('Error', 'No se pudo obtener el nombre del usuario.');
+      await this.presentAlert('Error', 'No se pudo obtener la información del usuario.');
       this.router.navigate(['/home']);
     }
   }
 
-  // Método para reiniciar las variables del formulario
   resetForm() {
     this.asignaturaSeleccionada = '';
     this.franjaHorariaSeleccionada = '';
     this.mensajeInteres = '';
     this.solicitanteNombre = '';
+    this.solicitanteId = '';
   }
 
   async solicitarTutoria() {
-    // Obtener el rol del usuario desde AuthService
     const userRole = this.authService.getUserRole();
     console.log('Rol del usuario:', userRole);
 
-    // Verificar si el usuario tiene un rol permitido
     if (!userRole || !(userRole.includes('alumno') || userRole.includes('tutor'))) {
       await this.presentAlert(
         'Error',
@@ -79,32 +77,27 @@ export class SolicitudTutoriaPage implements OnInit {
       return;
     }
 
-    // Validar que todos los campos estén completos
     if (!this.asignaturaSeleccionada || !this.franjaHorariaSeleccionada || !this.mensajeInteres) {
       await this.presentAlert('Error', 'Por favor, completa todos los campos antes de enviar la solicitud.');
       return;
     }
 
-    if (!this.solicitanteNombre) {
-      await this.presentAlert('Error', 'No se pudo cargar el nombre del solicitante. Por favor, intenta nuevamente.');
+    if (!this.solicitanteId || !this.solicitanteNombre) {
+      await this.presentAlert('Error', 'No se pudo cargar la información del usuario. Por favor, intenta nuevamente.');
       return;
     }
 
-    const userId = localStorage.getItem('userId'); // Obtener el ID del usuario desde localStorage
-
-    // Crear el objeto de solicitud
     const solicitud: Solicitud = {
       asignatura: this.asignaturaSeleccionada,
       franjaHoraria: this.franjaHorariaSeleccionada,
       mensajeInteres: this.mensajeInteres,
-      solicitanteId: userId || '', 
+      solicitanteId: this.solicitanteId, // Aseguramos el ID correcto del solicitante
       solicitanteNombre: this.solicitanteNombre, 
-      estado: 'pendiente' 
+      estado: 'pendiente',
     };
 
     console.log('Solicitud de tutoría:', solicitud);
 
-    // Enviar la solicitud al servidor
     this.http.post('http://localhost:3000/solicitudes', solicitud)
       .subscribe({
         next: async (response: any) => {
@@ -115,7 +108,7 @@ export class SolicitudTutoriaPage implements OnInit {
         error: async (error: any) => {
           console.error('Error al enviar la solicitud:', error);
           await this.presentAlert('Error', 'Hubo un problema al enviar la solicitud.');
-        }
+        },
       });
   }
 

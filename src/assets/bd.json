@@ -36,119 +36,226 @@
   ],
   "solicitudes": [
     {
-      "id": "ccce",
-      "asignatura": "Programación",
-      "franjaHoraria": "Mañana",
+      "id": "1a2e",
+      "asignatura": "Programación Web",
+      "franjaHoraria": "14:00-16:00",
       "mensajeInteres": "s",
-      "solicitanteId": "0328",
-      "solicitanteNombre": "Arlette Joseline Martínez",
-      "estado": "rechazada"
-    },
-    {
-      "id": "cf81",
-      "asignatura": "Inglés Intermedio II",
-      "franjaHoraria": "Tarde",
-      "mensajeInteres": "a",
-      "solicitanteId": "0328",
-      "solicitanteNombre": "Arlette Joseline Martínez",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman Roman",
       "estado": "aceptada"
     },
     {
-      "id": "ab92",
-      "asignatura": "Inglés Intermedio II",
-      "franjaHoraria": "Noche",
-      "mensajeInteres": "a",
-      "solicitanteId": "0328",
-      "solicitanteNombre": "Arlette Joseline Martínez",
-      "estado": "aceptada"
-    },
-    {
-      "id": "3ce2",
-      "asignatura": "Inglés Intermedio II",
-      "franjaHoraria": "Tarde",
-      "mensajeInteres": "l",
-      "solicitanteId": "2aa1",
-      "solicitanteNombre": "Yu Roman",
-      "estado": "aceptada"
-    },
-    {
-      "id": "7540",
-      "asignatura": "Programación",
-      "franjaHoraria": "Mañana",
-      "mensajeInteres": "a",
-      "solicitanteId": "2aa1",
-      "solicitanteNombre": "Yu Roman",
-      "estado": "aceptada"
-    },
-    {
-      "id": "c15d",
+      "id": "0af5",
       "asignatura": "Matemáticas",
-      "franjaHoraria": "Tarde",
+      "franjaHoraria": "14:00-16:00",
       "mensajeInteres": "s",
-      "solicitanteId": "2aa1",
-      "solicitanteNombre": "Yu Roman",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman Roman",
       "estado": "aceptada"
     },
     {
-      "id": "411f",
-      "asignatura": "Inglés Intermedio II",
-      "franjaHoraria": "Noche",
+      "id": "c055",
+      "asignatura": "Programación",
+      "franjaHoraria": "11:00-13:00",
       "mensajeInteres": "s",
-      "solicitanteId": "2aa1",
-      "solicitanteNombre": "Yu Roman",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman Roman",
       "estado": "aceptada"
     },
     {
-      "id": "788f",
-      "asignatura": "Matemáticas",
-      "franjaHoraria": "Noche",
-      "mensajeInteres": "s",
-      "solicitanteId": "0328",
-      "solicitanteNombre": "Yu Roman",
+      "id": "5ed3",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "14:00-16:00",
+      "mensajeInteres": "d",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman Roman",
       "estado": "aceptada"
-    },
-    {
-      "id": "3249",
-      "asignatura": "Inglés Intermedio II",
-      "franjaHoraria": "Mañana",
-      "mensajeInteres": "s",
-      "solicitanteId": "0328",
-      "solicitanteNombre": "Yu Roman",
-      "estado": "pendiente"
-    },
-    {
-      "id": "fb54",
-      "asignatura": "Inglés Intermedio II",
-      "franjaHoraria": "Tarde",
-      "mensajeInteres": "h",
-      "solicitanteId": "0328",
-      "solicitanteNombre": "Yu Roman",
-      "estado": "pendiente"
     }
   ],
   "tutorias": [
     {
-      "id": "42f2",
+      "id": "4736",
+      "tutorId": "ar.martinez",
       "tutor": "Arlette Martinez",
       "asignatura": "Programación",
-      "franjaHoraria": "Mañana",
+      "franjaHoraria": "16:00-18:00",
       "estado": "interesado"
     },
     {
-      "id": "411f",
+      "id": "ad20",
+      "tutorId": "ar.martinez",
+      "tutor": "Arlette Martinez",
       "asignatura": "Inglés Intermedio II",
-      "franjaHoraria": "Noche",
-      "tutor": "Yu Roman",
-      "tutorId": "2aa1",
+      "franjaHoraria": "10:00-11:00",
       "estado": "interesado"
     },
     {
-      "id": "788f",
-      "asignatura": "Matemáticas",
-      "franjaHoraria": "Noche",
-      "tutor": "Yu Roman",
-      "tutorId": "0328",
+      "id": "3f30",
+      "tutorId": "nico.fdz",
+      "tutor": "Nicolas Fernandez",
+      "asignatura": "Programación",
+      "franjaHoraria": "10:00-11:00",
       "estado": "interesado"
+    },
+    {
+      "id": "e141",
+      "tutorId": "ar.martinez",
+      "tutor": "Arlette Martinez",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "10:00-11:00",
+      "estado": "interesado"
+    }
+  ],
+  "clases": [
+    {
+      "id": "fe61",
+      "tipo": "por tomar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "Tutor ID no disponible",
+      "asignatura": "Programación",
+      "franjaHoraria": "16:00-18:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "6e61",
+      "tipo": "por dar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Programación",
+      "franjaHoraria": "16:00-18:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "c127",
+      "tipo": "por dar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Programación Web",
+      "franjaHoraria": "14:00-16:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "f804",
+      "tipo": "por tomar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Programación Web",
+      "franjaHoraria": "14:00-16:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "217c",
+      "tipo": "por dar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "14:00-16:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "102a",
+      "tipo": "por tomar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "14:00-16:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "3e23",
+      "tipo": "por tomar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "Tutor ID no disponible",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "10:00-11:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "a1d0",
+      "tipo": "por dar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "10:00-11:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "91f8",
+      "tipo": "por tomar",
+      "tutor": "Nicolas Fernandez",
+      "tutorId": "Tutor ID no disponible",
+      "asignatura": "Programación",
+      "franjaHoraria": "10:00-11:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "b8eb",
+      "tipo": "por dar",
+      "tutor": "Nicolas Fernandez",
+      "tutorId": "nico.fdz",
+      "asignatura": "Programación",
+      "franjaHoraria": "10:00-11:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "aa73",
+      "tipo": "por dar",
+      "tutor": "Nicolas Fernandez",
+      "tutorId": "nico.fdz",
+      "asignatura": "Programación",
+      "franjaHoraria": "11:00-13:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "f502",
+      "tipo": "por tomar",
+      "tutor": "Nicolas Fernandez",
+      "tutorId": "nico.fdz",
+      "asignatura": "Programación",
+      "franjaHoraria": "11:00-13:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "7e4c",
+      "tipo": "por dar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "14:00-16:00",
+      "alumno": "Yuliana Roman Roman",
+      "alumnoId": "yu.roman"
+    },
+    {
+      "id": "6f76",
+      "tipo": "por tomar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "Tutor ID no disponible",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "10:00-11:00",
+      "alumno": "Nicolas Fernandez",
+      "alumnoId": "nico.fdz"
+    },
+    {
+      "id": "4306",
+      "tipo": "por dar",
+      "tutor": "Arlette Martinez",
+      "tutorId": "ar.martinez",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "10:00-11:00",
+      "alumno": "Nicolas Fernandez",
+      "alumnoId": "nico.fdz"
     }
   ]
 }

@@ -6,23 +6,16 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'splash', // Redirige a la página splash como inicio
-    pathMatch: 'full'
+    pathMatch: 'full' // Es importante que esta opción esté configurada correctamente
   },
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
-  {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then(m => m.RegisterPageModule)
-  },
+  
   {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then(m => m.SplashPageModule)
-  },
-  {
-    path: 'menu-page',
-    loadChildren: () => import('./menu/menu.module').then(m => m.MenuPageModule)
   },
   {
     path: 'user-dashboard',
@@ -39,19 +32,16 @@ const routes: Routes = [
     loadChildren: () => import('./solicitud-tutoria/solicitud-tutoria.module').then(m => m.SolicitudTutoriaPageModule)
   },
   {
-    path: 'e404',
-    loadChildren: () => import('./e404/e404.module').then(m => m.E404PageModule)
-  },
-  {
-    path: 'clases', // Nueva ruta para el componente de clases
-    loadChildren: () => import('./clases/clases.module').then(m => m.ClasesModule), // Asegúrate de que el módulo esté creado
+    path: 'clases',
+    loadChildren: () => import('./clases/clases.module').then(m => m.ClasesModule),
     canActivate: [AuthGuard] // Protege la ruta si es necesario
   },
-  
   {
     path: 'agregar-tutoria',
     loadChildren: () => import('./agregar-tutoria/agregar-tutoria.module').then(m => m.AgregarTutoriaPageModule)
-  }
+  },
+  // Ruta comodín para manejar rutas no existentes y redirigir a la página de error 404
+  { path: '**', loadChildren: () => import('./e404/e404.module').then(m => m.E404PageModule) }
 ];
 
 @NgModule({

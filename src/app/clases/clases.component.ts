@@ -1,124 +1,135 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';  // Asegúrate de que este servicio está exportado correctamente
+import { ClasesService } from '../services/mis-clases.service';  // Asegúrate de que este servicio está exportado correctamente
+import { ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-clases',
-  templateUrl: './clases.component.html',
-  styleUrls: ['./clases.component.scss']
+  selector: 'app-clases', // Este es el selector del componente
+  templateUrl: './clases.component.html', // Asegúrate de que la ruta del archivo HTML es correcta
+  styleUrls: ['./clases.component.scss'], // Asegúrate de que la ruta del archivo de estilos es correcta
 })
-export class ClasesComponent implements OnInit {
-  solicitudes: any[] = []; // Solicitudes de tutoría para el tutor
-  tutorias: any[] = []; // Tutorías disponibles o aceptadas para alumno y tutor
-  clasesPorDar: any[] = []; // Clases que el tutor tiene por dar
-  clasesPorTomar: any[] = []; // Clases que el alumno tiene por tomar
-  usuario: any = null;
+export class ClasesComponent implements OnInit, OnDestroy {
   roles: string[] = [];
-  vistaActual: string = ''; // Para controlar si es alumno o tutor
+  vistaActual: 'alumno' | 'tutor' | null = null;
+  clasesPorTomar: any[] = [];
+  clasesPorDar: any[] = [];
+  usuarioSubscription: Subscription | null = null;
+  clasesSubscription: Subscription | null = null;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private clasesService: ClasesService,
+    private router: Router,
+    private toastController: ToastController,
+    private cdr: ChangeDetectorRef  // Inyectamos ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.obtenerUsuario();
-    this.cargarDatosSegunRol();
+    // Se suscribe al cambio del usuario y actualiza la vista
+    this.usuarioSubscription = this.authService.userChanged.subscribe(() => {
+      this.obtenerUsuarioYActualizarVista();
+    });
+
+    // Obtiene el usuario actual y actualiza la vista
+    this.obtenerUsuarioYActualizarVista();
+
+    // Se suscribe al flujo de clases y actualiza la vista
+    this.clasesSubscription = this.clasesService.clases$.subscribe((clases) => {
+      this.actualizarClasesVista(clases);
+      this.cdr.detectChanges();  // Forzamos la detección de cambios
+    });
   }
 
-  obtenerUsuario() {
-    const userRoles = this.authService.getUserRole(); // Obtener el rol del usuario
-
-    if (userRoles) {
-      this.roles = Array.isArray(userRoles) ? userRoles : userRoles.split(',').map(role => role.trim());
-      this.vistaActual = this.roles[0]; // Asignamos el rol principal
-    } else {
-      this.router.navigate(['/home']); // Redirigir si no hay rol
+  ngOnDestroy() {
+    // Desuscribe las suscripciones al destruir el componente
+    if (this.usuarioSubscription) {
+      this.usuarioSubscription.unsubscribe();
     }
-    this.cargarDatosSegunRol(); // Cargar datos después de obtener el rol
-  }
-
-  cargarDatosSegunRol() {
-    if (this.vistaActual === 'alumno' && this.roles.includes('alumno')) {
-      this.cargarTutoriasAlumno();
-      this.cargarSolicitudesAlumno();
-    } 
-    else if (this.vistaActual === 'tutor' && this.roles.includes('tutor')) {
-      this.cargarSolicitudesTutor();
-      this.cargarTutoriasTutor();
-    } 
-    else {
-      this.router.navigate(['/no-access']);
+    if (this.clasesSubscription) {
+      this.clasesSubscription.unsubscribe();
     }
   }
 
-  cargarTutoriasAlumno() {
-    this.http.get<any[]>('http://localhost:3000/tutorias').subscribe({
-      next: (data) => {
-        console.log(data);  // Verifica los datos recibidos
-        this.clasesPorTomar = data.filter(tutoria => tutoria.estado === 'aceptada' || tutoria.estado === 'interesado')
-                                   .map(tutoria => ({
-                                     ...tutoria,
-                                     nombreTutor: (tutoria.nombreTutor && typeof tutoria.nombreTutor === 'string' && tutoria.nombreTutor.trim()) 
-                                               ? tutoria.nombreTutor 
-                                               : 'Tutor no disponible'
-                                   }));
-      },
-      error: () => {
-        console.error('Error al cargar tutorías');
-      },
-    });
+  async obtenerUsuarioYActualizarVista() {
+    try {
+      // Obtiene el usuario actual de la autenticación
+      const usuarioActual = await this.authService.getUsuarioActual();
+      if (usuarioActual && usuarioActual.username) {
+        this.actualizarVistaUsuario(usuarioActual.username);
+      } else {
+        this.router.navigate(['/home']);
+      }
+    } catch (error) {
+      console.error('Error al obtener el usuario actual:', error);
+      this.router.navigate(['/home']);
+    }
   }
 
-  cargarSolicitudesAlumno() {
-    this.http.get<any[]>('http://localhost:3000/solicitudes').subscribe({
-      next: (data) => {
-        console.log(data);  // Verifica los datos recibidos
-        this.clasesPorDar = data.filter(solicitud => solicitud.estado === 'aceptada')
-                                 .map(solicitud => ({
-                                   ...solicitud,
-                                   nombreTutor: (solicitud.nombreTutor && typeof solicitud.nombreTutor === 'string' && solicitud.nombreTutor.trim()) 
-                                               ? solicitud.nombreTutor 
-                                               : 'Tutor no disponible'
-                                 }));
-      },
-      error: () => {
-        console.error('Error al cargar solicitudes');
-      },
+  actualizarVistaUsuario(username: string) {
+    this.roles = this.obtenerRolesUsuario();
+    this.vistaActual = this.roles.includes('alumno') ? 'alumno' : (this.roles.includes('tutor') ? 'tutor' : null);
+  
+    // Cargar clases dependiendo de los roles
+    if (this.roles.includes('alumno') || this.roles.includes('tutor')) {
+      this.clasesService.cargarClases();
+    }
+  }
+  
+
+  obtenerRolesUsuario(): string[] {
+    // Obtiene los roles del usuario
+    const userRoles = this.authService.getUserRole();
+    return userRoles
+      ? Array.isArray(userRoles)
+        ? userRoles
+        : userRoles.split(',').map((role) => role.trim())
+      : [];
+  }
+  actualizarClasesVista(clases: any[]) {
+    this.authService.getUsuarioActual().then(usuarioActual => {
+      if (usuarioActual && usuarioActual.username) {
+        // Si el usuario es 'alumno', mostramos las clases "por tomar"
+        if (this.roles.includes('alumno')) {
+          this.clasesPorTomar = clases.filter(clase => clase.tipo === 'por tomar' && clase.alumnoId === usuarioActual.username);
+        }
+  
+        // Si el usuario es 'tutor', mostramos las clases "por dar"
+        if (this.roles.includes('tutor')) {
+          this.clasesPorDar = clases.filter(clase => clase.tipo === 'por dar' && clase.tutorId === usuarioActual.username);
+        }
+      }
+    }).catch(error => {
+      console.error('Error al obtener el usuario actual:', error);
     });
   }
-
-  cargarSolicitudesTutor() {
-    this.http.get<any[]>('http://localhost:3000/solicitudes').subscribe({
-      next: (data) => {
-        console.log(data);  // Verifica los datos recibidos
-        this.solicitudes = data.filter(solicitud => solicitud.estado === 'aceptada')
-                               .map(solicitud => ({
-                                 ...solicitud,
-                                 nombreSolicitante: (solicitud.nombreSolicitante && typeof solicitud.nombreSolicitante === 'string' && solicitud.nombreSolicitante.trim()) 
-                                                   ? solicitud.nombreSolicitante 
-                                                   : 'Solicitante no disponible'
-                               }));
-      },
-      error: () => {
-        console.error('Error al cargar solicitudes');
-      },
-    });
+  agregarClase(nuevaClase: any) {
+    // Agrega una nueva clase usando el servicio
+    this.clasesService.agregarClase(nuevaClase);
+    this.mostrarToast('Clases agregada correctamente');
   }
 
-  cargarTutoriasTutor() {
-    this.http.get<any[]>('http://localhost:3000/tutorias').subscribe({
-      next: (data) => {
-        console.log(data);  // Verifica los datos recibidos
-        this.tutorias = data.filter(tutoria => tutoria.estado === 'aceptada')
-                             .map(tutoria => ({
-                               ...tutoria,
-                               nombreSolicitante: (tutoria.nombreSolicitante && typeof tutoria.nombreSolicitante === 'string' && tutoria.nombreSolicitante.trim()) 
-                                                 ? tutoria.nombreSolicitante 
-                                                 : 'Solicitante no disponible'
-                             }));
-      },
-      error: () => {
-        console.error('Error al cargar tutorías');
-      },
+  onSegmentChange(event: any) {
+    // Cambia la vista según el rol seleccionado
+    const rolSeleccionado = event.detail.value;
+
+    if (rolSeleccionado === 'alumno' && this.vistaActual !== 'alumno') {
+      this.vistaActual = 'alumno';
+      this.obtenerUsuarioYActualizarVista();
+    } else if (rolSeleccionado === 'tutor' && this.vistaActual !== 'tutor') {
+      this.vistaActual = 'tutor';
+      this.obtenerUsuarioYActualizarVista();
+    }
+  }
+
+  async mostrarToast(mensaje: string) {
+    // Muestra un mensaje de toast
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'top',
     });
+    await toast.present();
   }
 }

@@ -12,6 +12,7 @@ export class AgregarTutoriaPage implements OnInit {
   tutorNombre: string = '';
   asignatura: string = '';
   franjaHoraria: string = '';
+  tutorId: string = '';  // Añadido para almacenar el userId
 
   constructor(
     private alertController: AlertController,
@@ -23,23 +24,38 @@ export class AgregarTutoriaPage implements OnInit {
     this.cargarDatosTutor();
   }
 
+  // Función para cargar los datos del tutor desde el AuthService
   async cargarDatosTutor() {
-    // Llamamos al método getUserDetails() del AuthService para obtener el usuario autenticado
-    const user: User | undefined = await this.authService.getUserDetails();
-    if (user) {
-      this.tutorNombre = user.fullName; // Asignamos el nombre completo del tutor
-    } else {
-      console.error('Tutor no encontrado');
+    try {
+      // Llamamos al método getUserDetails() del AuthService para obtener el usuario autenticado
+      const user: User | undefined = await this.authService.getUserDetails();
+      if (user) {
+        this.tutorNombre = user.fullName; // Asignamos el nombre completo del tutor
+        this.tutorId = user.username;  // Asignamos el userId del tutor
+      } else {
+        console.error('Tutor no encontrado');
+        await this.presentAlert('Error', 'No se encontró el tutor.');
+      }
+    } catch (error) {
+      console.error('Error al cargar datos del tutor:', error);
+      await this.presentAlert('Error', 'Hubo un problema al obtener los datos del tutor.');
     }
   }
 
   async agregarTutoria() {
+    // Validación de los campos
     if (!this.asignatura || !this.franjaHoraria) {
       await this.presentAlert('Error', 'Por favor, completa todos los campos antes de agregar la tutoría.');
       return;
     }
 
+    if (!this.tutorId) {
+      await this.presentAlert('Error', 'No se encontró el ID del tutor.');
+      return;
+    }
+
     const nuevaTutoria = {
+      tutorId: this.tutorId,  // Usamos el tutorId obtenido del AuthService
       tutor: this.tutorNombre,
       asignatura: this.asignatura,
       franjaHoraria: this.franjaHoraria,

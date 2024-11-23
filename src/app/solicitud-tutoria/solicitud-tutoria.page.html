@@ -1,13 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Solicitud de Tutoría</ion-title>
+  <ion-toolbar class="dashboard-masivo">
+    <ion-title>Solicitud Tutoría</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form (submit)="solicitarTutoria()">
     <ion-item>
-      <ion-label>Nombre del Solicitante</ion-label>
+      <ion-label>Nombre del Alumno Solicitante</ion-label>
       <ion-input type="text" [value]="solicitanteNombre" readonly></ion-input>
     </ion-item>
 
@@ -17,6 +20,8 @@
         <ion-select-option value="Inglés Intermedio II">Inglés Intermedio II</ion-select-option>
         <ion-select-option value="Programación">Programación</ion-select-option>
         <ion-select-option value="Matemáticas">Matemáticas</ion-select-option>
+        <ion-select-option value="Programación Web">Programación Web</ion-select-option>
+        
         <!-- Añadir más asignaturas según sea necesario -->
       </ion-select>
     </ion-item>
@@ -24,9 +29,9 @@
     <ion-item>
       <ion-label>Franja Horaria</ion-label>
       <ion-select [(ngModel)]="franjaHorariaSeleccionada" name="franjaHoraria" placeholder="Seleccionar horario">
-        <ion-select-option value="Mañana">Mañana</ion-select-option>
-        <ion-select-option value="Tarde">Tarde</ion-select-option>
-        <ion-select-option value="Noche">Noche</ion-select-option>
+        <ion-select-option value="11:00-13:00">11:00-13:00</ion-select-option>
+        <ion-select-option value="14:00-16:00">14:00-16:00</ion-select-option>
+        <ion-select-option value="17:00-19:00">17:00-19:00</ion-select-option>
       </ion-select>
     </ion-item>
 

@@ -16,6 +16,7 @@ export class UserDashboardPage implements OnInit, ViewWillEnter {
   roles: string[] = [];
   usuario: any = null;
   vistaActual: string = '';
+  clases: any[] = []; // Aquí se almacenarán las clases por dar y por tomar
 
   constructor(
     private http: HttpClient,
@@ -45,14 +46,31 @@ export class UserDashboardPage implements OnInit, ViewWillEnter {
   }
 
   cargarDatosSegunRoles() {
-    if (this.vistaActual === 'alumno' && this.roles.includes('alumno')) {
-      this.cargarTutorias();
-      this.solicitudes = [];
-    } else if (this.vistaActual === 'tutor' && this.roles.includes('tutor')) {
-      this.cargarSolicitudes();
-      this.tutorias = [];
+    if (this.roles.includes('alumno') && !this.roles.includes('tutor')) {
+      if (this.vistaActual === 'alumno') {
+        this.cargarTutorias();
+        this.solicitudes = [];
+      } else {
+        this.vistaActual = 'alumno'; // Si solo tiene rol de alumno, redirige a la vista correspondiente
+      }
+    } else if (this.roles.includes('tutor') && !this.roles.includes('alumno')) {
+      if (this.vistaActual === 'tutor') {
+        this.cargarSolicitudes();
+        this.tutorias = [];
+      } else {
+        this.vistaActual = 'tutor'; // Si solo tiene rol de tutor, redirige a la vista correspondiente
+      }
+    } else if (this.roles.includes('alumno') && this.roles.includes('tutor')) {
+      // Si tiene ambos roles, permite el acceso a ambas vistas
+      if (this.vistaActual === 'alumno') {
+        this.cargarTutorias();
+        this.solicitudes = [];
+      } else {
+        this.cargarSolicitudes();
+        this.tutorias = [];
+      }
     } else {
-      this.router.navigate(['/no-access']);
+      this.router.navigate(['/user-dashboard']);
     }
   }
 
@@ -68,28 +86,87 @@ export class UserDashboardPage implements OnInit, ViewWillEnter {
   cargarTutorias() {
     this.http.get<any[]>('http://localhost:3000/tutorias').subscribe({
       next: (data) => {
-        this.tutorias = data.filter(t => t.estado === 'disponible');
+        // Filtrar las tutorías para que no aparezcan aquellas ya aceptadas en las solicitudes
+        this.tutorias = data.filter(t => t.estado === 'disponible' && !this.solicitudes.some(s => s.id === t.id && s.estado === 'aceptada'));
       },
       error: () => this.mostrarToast('Error al cargar tutorías'),
     });
   }
 
   onSegmentChange(event: any) {
-    this.vistaActual = event.detail.value;
+    // Verificar si el usuario tiene ambos roles
+    if (this.roles.includes('alumno') && this.roles.includes('tutor')) {
+      this.vistaActual = event.detail.value; // Permitir el cambio de segmento si tiene ambos roles
+    } else {
+      // Si solo tiene uno de los roles, bloquear el cambio de vista
+      if (this.roles.includes('alumno') && event.detail.value === 'tutor') {
+        this.mostrarToast('Solo puedes acceder a la vista de tutor si tienes el rol de tutor.');
+        return;
+      }
+      if (this.roles.includes('tutor') && event.detail.value === 'alumno') {
+        this.mostrarToast('Solo puedes acceder a la vista de alumno si tienes el rol de alumno.');
+        return;
+      }
+      this.vistaActual = this.roles[0]; // Si solo tiene un rol, mantiene la vista inicial
+    }
     this.cargarDatosSegunRoles();
   }
-
+  
   meInteresa(tutoria: any) {
-    const tutoriaActualizada = { ...tutoria, estado: 'interesado' };
-    this.http.put(`http://localhost:3000/tutorias/${tutoria.id}`, tutoriaActualizada).subscribe({
-      next: () => {
-        this.mostrarToast(`Te interesa la tutoría de ${tutoria.asignatura}`);
-        this.cargarTutorias();
-      },
-      error: () => this.mostrarToast('Error al registrar el estado de la tutoría'),
+    // Obtener información del usuario logueado
+    this.authService.getUsuarioActual().then(usuario => {
+      const usuarioNombre = usuario?.fullName || 'Nombre del usuario no disponible';
+      const usuarioId = usuario?.username || 'ID del usuario no disponible';
+  
+      const tutoriaActualizada = { ...tutoria, estado: 'interesado' };
+  
+      // Actualizar el estado de la tutoría
+      this.http.put(`http://localhost:3000/tutorias/${tutoria.id}`, tutoriaActualizada).subscribe({
+        next: () => {
+          this.mostrarToast(`Te interesa la tutoría de ${tutoria.asignatura}`);
+          this.cargarTutorias();
+  
+          // Crear una clase "por tomar" para el alumno
+          const claseParaAlumno = {
+            tipo: 'por tomar',
+            tutor: tutoria.tutor,
+            tutorId: 'Tutor ID no disponible',  // Usamos un valor por defecto cuando el tutorId no está disponible
+            asignatura: tutoria.asignatura,
+            franjaHoraria: tutoria.franjaHoraria,
+            alumno: usuarioNombre,
+            alumnoId: usuarioId,  // Usamos el alumnoId del usuario actual
+          };
+  
+          // Crear una clase "por dar" para el tutor
+          const claseParaTutor = {
+            tipo: 'por dar',
+            tutor: tutoria.tutor,
+            tutorId: tutoria.tutorId || 'Tutor ID no disponible', // Usamos el tutorId de la tutoría o un valor por defecto
+            asignatura: tutoria.asignatura,
+            franjaHoraria: tutoria.franjaHoraria,
+            alumno: usuarioNombre,
+            alumnoId: usuarioId,  // Usamos el alumnoId del usuario actual
+          };
+  
+          // Guardar la clase "por tomar" para el alumno
+          this.http.post('http://localhost:3000/clases', claseParaAlumno).subscribe({
+            next: () => this.mostrarToast('Clase "por tomar" creada para el alumno'),
+            error: () => this.mostrarToast('Error al crear la clase para el alumno'),
+          });
+  
+          // Guardar la clase "por dar" para el tutor
+          this.http.post('http://localhost:3000/clases', claseParaTutor).subscribe({
+            next: () => this.mostrarToast('Clase "por dar" creada para el tutor'),
+            error: () => this.mostrarToast('Error al crear la clase para el tutor'),
+          });
+        },
+        error: () => this.mostrarToast('Error al registrar el estado de la tutoría'),
+      });
+    }).catch(() => {
+      this.mostrarToast('Error al obtener información del usuario actual');
     });
   }
-
+  
   noMeInteresa(tutoria: any) {
     const tutoriaActualizada = { ...tutoria, estado: 'no interesado' };
     this.http.put(`http://localhost:3000/tutorias/${tutoria.id}`, tutoriaActualizada).subscribe({
@@ -100,58 +177,48 @@ export class UserDashboardPage implements OnInit, ViewWillEnter {
       error: () => this.mostrarToast('Error al registrar el estado de la tutoría'),
     });
   }
-
-  actualizarEstadoTutoria(tutoria: any, estado: string, mensaje: string) {
-    this.http.put(`http://localhost:3000/tutorias/${tutoria.id}`, { estado }).subscribe({
-      next: () => {
-        this.mostrarToast(`${mensaje} ${tutoria.asignatura}`);
-        this.cargarTutorias();
-      },
-      error: () => this.mostrarToast('Error al actualizar el estado de la tutoría'),
-    });
-  }
-
+  
   aceptarSolicitud(solicitud: any) {
-    const solicitudActualizada = { ...solicitud, estado: 'aceptada' };
-    this.http.put(`http://localhost:3000/solicitudes/${solicitud.id}`, solicitudActualizada).subscribe({
-      next: () => this.crearTutoriaDesdeSolicitud(solicitud),
-      error: () => this.mostrarToast('Error al aceptar solicitud'),
+    this.authService.getUsuarioActual().then(tutor => {
+      const tutorNombre = tutor?.fullName || 'Nombre del tutor no disponible';
+      const tutorId = tutor?.username || 'ID del tutor no disponible';
+  
+      const solicitudActualizada = { ...solicitud, estado: 'aceptada' };
+  
+      this.http.put(`http://localhost:3000/solicitudes/${solicitud.id}`, solicitudActualizada).subscribe({
+        next: () => {
+          this.mostrarToast(`Solicitud aceptada para: ${solicitud.asignatura}`);
+  
+          const claseParaTutor = {
+            tipo: 'por dar',
+            tutor: tutorNombre,
+            tutorId: tutorId, // Usamos el tutorId del tutor actual
+            asignatura: solicitud.asignatura,
+            franjaHoraria: solicitud.franjaHoraria,
+            alumno: solicitud.solicitanteNombre,
+            alumnoId: solicitud.solicitanteId, // Usamos el alumnoId de la solicitud
+          };
+  
+          this.http.post('http://localhost:3000/clases', claseParaTutor).subscribe({
+            next: () => this.mostrarToast('Clase "por dar" creada para el tutor'),
+            error: () => this.mostrarToast('Error al crear la clase para el tutor'),
+          });
+  
+          this.cargarSolicitudes();
+        },
+        error: () => this.mostrarToast('Error al aceptar la solicitud'),
+      });
+    }).catch(() => {
+      this.mostrarToast('Error al obtener información del tutor actual');
     });
   }
-
   rechazarSolicitud(solicitud: any) {
     this.http.put(`http://localhost:3000/solicitudes/${solicitud.id}`, { estado: 'rechazada' }).subscribe({
       next: () => {
         this.mostrarToast(`Solicitud rechazada: ${solicitud.asignatura}`);
-        this.cargarSolicitudes();
+        this.solicitudes = this.solicitudes.filter(s => s.id !== solicitud.id);
       },
       error: () => this.mostrarToast('Error al rechazar solicitud'),
-    });
-  }
-
-  crearTutoriaDesdeSolicitud(solicitud: any) {
-    // Verifica que este método solo sea ejecutado por tutores
-    if (!this.roles.includes('tutor')) {
-      this.mostrarToast('No tienes permisos para crear una tutoría');
-      return;
-    }
-
-    const nuevaTutoria = {
-      id: solicitud.id,
-      asignatura: solicitud.asignatura,
-      franjaHoraria: solicitud.franjaHoraria,
-      tutor: solicitud.solicitanteNombre,
-      tutorId: solicitud.solicitanteId,
-      estado: 'disponible',
-    };
-
-    this.http.post('http://localhost:3000/tutorias', nuevaTutoria).subscribe({
-      next: () => {
-        this.mostrarToast(`Solicitud aceptada y tutoría creada: ${solicitud.asignatura}`);
-        this.cargarSolicitudes();
-        this.cargarTutorias();
-      },
-      error: () => this.mostrarToast('Error al crear tutoría'),
     });
   }
 
@@ -160,11 +227,10 @@ export class UserDashboardPage implements OnInit, ViewWillEnter {
       message: mensaje,
       duration: 2000,
     });
-    await toast.present();
+    toast.present();
   }
-
+  
   irASolicitudTutoria() {
-    // Verifica que solo los alumnos puedan acceder
     if (!this.roles.includes('alumno')) {
       this.mostrarToast('Solo los alumnos pueden crear solicitudes de tutoría.');
       return;
@@ -173,7 +239,6 @@ export class UserDashboardPage implements OnInit, ViewWillEnter {
   }
 
   irAgregarTutoria() {
-    // Verifica que solo los tutores puedan acceder
     if (!this.roles.includes('tutor')) {
       this.mostrarToast('Solo los tutores pueden agregar tutorías.');
       return;

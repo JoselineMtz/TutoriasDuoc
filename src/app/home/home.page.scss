@@ -26,10 +26,10 @@
   text-decoration: none;
 }
 .custom-button {
-  --background:  #d7ebff; /* Cambia esto al color que desees */
-  --background-activated: #388e3c; /* Color al presionar el botón */
-  --background-focused: #66bb6a; /* Color al enfocar el botón */
-  --color: rgb(0, 0, 0); /* Color del texto */
+  --background:  #4d66ac; /* Cambia esto al color que desees */
+  --background-activated: #f4fc84; /* Color al presionar el botón */
+  --background-focused: #d3b03c; /* Color al enfocar el botón */
+  --color: rgb(255, 255, 255); /* Color del texto */
 }
 .custom-content {
   margin-top: 70px !important; /* Ajusta el valor según el espacio que desees */
@@ -45,7 +45,7 @@
   height: auto; /* Mantiene la proporción de la imagen */
 }
 ion-toolbar {
-  --background: #fdb548; /* Cambia el color de fondo del toolbar si es necesario */
+  --background: #f0af54; /* Cambia el color de fondo del toolbar si es necesario */
 }
 
 ion-item {

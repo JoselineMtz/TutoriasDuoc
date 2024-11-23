@@ -97,4 +97,16 @@ export class AuthService {
   async getUsuarioActual(): Promise<User | undefined> {
     return await this.getUserDetails(); // Usa getUserDetails para obtener el usuario completo
   }
+
+  // Método para obtener todos los roles del usuario (utilizado en el UserDashboardPage)
+  getUserRoles(): string[] {
+    const role = this.getUserRole();
+    return role ? role.split(',').map(r => r.trim()) : [];
+  }
+
+  // Método para verificar el rol específico de un usuario (por ejemplo, si es tutor o alumno)
+  isRole(role: string): boolean {
+    const roles = this.getUserRoles();
+    return roles.includes(role);
+  }
 }

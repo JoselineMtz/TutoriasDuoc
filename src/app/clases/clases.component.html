@@ -1,78 +1,45 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>{{ vistaActual === 'alumno' ? 'Mis Clases' : 'Solicitudes y Clases' }}</ion-title>
+  <ion-toolbar class="dashboard-masivo">
+    <ion-title>Mis Clases</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Si el rol es alumno -->
+  <ion-segment [(ngModel)]="vistaActual" (ionChange)="onSegmentChange($event)">
+    <ion-segment-button value="alumno" [disabled]="!roles.includes('alumno')">
+      Alumno
+    </ion-segment-button>
+    <ion-segment-button value="tutor" [disabled]="!roles.includes('tutor')">
+      Tutor
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Sección Alumno -->
   <div *ngIf="vistaActual === 'alumno'">
     <h2>Clases por Tomar</h2>
     <ion-list>
       <ion-item *ngFor="let tutoria of clasesPorTomar">
         <ion-label>
-          <h3>{{ tutoria.titulo }}</h3>
-          <p>Tutor: {{ tutoria.nombreTutor }}</p>
+          <h3>{{ tutoria.asignatura }}</h3>
+          <p>Tutor: {{ tutoria.tutor }}</p>
           <p>Franja Horaria: {{ tutoria.franjaHoraria }}</p>
-          <p>Estado: {{ tutoria.estado }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
-
-    <div *ngIf="clasesPorTomar.length === 0">
-      <ion-text color="medium">
-        <p>No tienes clases por tomar disponibles en este momento.</p>
-      </ion-text>
-    </div>
-
-    <h2>Clases por Dar</h2>
-    <ion-list>
-      <ion-item *ngFor="let solicitud of clasesPorDar">
-        <ion-label>
-          <h3>{{ solicitud.titulo }}</h3>
-          <p>Asignatura: {{ solicitud.asignatura }}</p>
-          <p>Franja Horaria: {{ solicitud.franjaHoraria }}</p>
-          <p>Solicitante: {{ solicitud.nombreTutor }}</p>
-          <p>Estado: {{ solicitud.estado }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-
-    <div *ngIf="clasesPorDar.length === 0">
-      <ion-text color="medium">
-        <p>No tienes clases por dar disponibles en este momento.</p>
-      </ion-text>
-    </div>
   </div>
 
-  <!-- Si el rol es tutor -->
+  <!-- Sección Tutor -->
   <div *ngIf="vistaActual === 'tutor'">
     <h2>Clases por Dar</h2>
     <ion-list>
-      <ion-item *ngFor="let solicitud of solicitudes">
+      <ion-item *ngFor="let clase of clasesPorDar">
         <ion-label>
-          <h3>{{ solicitud.titulo }}</h3>
-          <p>Solicitante: {{ solicitud.nombreSolicitante }}</p>
-          <p>Asignatura: {{ solicitud.asignatura }}</p>
-          <p>Franja Horaria: {{ solicitud.franjaHoraria }}</p>
-          <p>Estado: {{ solicitud.estado }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-
-    <div *ngIf="solicitudes.length === 0">
-      <ion-text color="medium">
-        <p>No tienes solicitudes aceptadas en este momento.</p>
-      </ion-text>
-    </div>
-
-    <h2>Tutorías Aceptadas</h2>
-    <ion-list>
-      <ion-item *ngFor="let tutoria of tutorias">
-        <ion-label>
-          <h3>{{ tutoria.titulo }}</h3>
-          <p>Solicitante: {{ tutoria.nombreSolicitante }}</p>
-          <p>Franja Horaria: {{ tutoria.franjaHoraria }}</p>
+          <h3>{{ clase.asignatura }}</h3>
+          <p>Alumno: {{ clase.alumno }}</p>
+          <p>Franja Horaria: {{ clase.franjaHoraria }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
