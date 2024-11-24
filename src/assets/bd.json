@@ -5,7 +5,7 @@
       "carrera": "Ingeniería Informática",
       "jornada": "Diurna",
       "correo": "yu.roman@correo.com",
-      "telefono": "999333",
+      "telefono": "99933",
       "nombreSocial": "yulis",
       "foto": null,
       "id": "2aa1",
@@ -70,6 +70,60 @@
       "solicitanteId": "yu.roman",
       "solicitanteNombre": "Yuliana Roman Roman",
       "estado": "aceptada"
+    },
+    {
+      "id": "deba",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "11:00-13:00",
+      "mensajeInteres": "s",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman ",
+      "estado": "pendiente"
+    },
+    {
+      "id": "c18a",
+      "asignatura": "Inglés Intermedio II",
+      "franjaHoraria": "11:00-13:00",
+      "mensajeInteres": "s",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman ",
+      "estado": "pendiente"
+    },
+    {
+      "id": "d516",
+      "asignatura": "Matemáticas",
+      "franjaHoraria": "14:00-16:00",
+      "mensajeInteres": "s",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman ",
+      "estado": "pendiente"
+    },
+    {
+      "id": "06e7",
+      "asignatura": "Programación",
+      "franjaHoraria": "14:00-16:00",
+      "mensajeInteres": "s",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman ",
+      "estado": "pendiente"
+    },
+    {
+      "id": "29cd",
+      "asignatura": "Programación Web",
+      "franjaHoraria": "11:00-13:00",
+      "mensajeInteres": "s",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman ",
+      "estado": "pendiente"
+    },
+    {
+      "id": "88c6",
+      "asignatura": "Programación Web",
+      "franjaHoraria": "17:00-19:00",
+      "mensajeInteres": "s",
+      "solicitanteId": "yu.roman",
+      "solicitanteNombre": "Yuliana Roman ",
+      "estado": "pendiente"
     }
   ],
   "tutorias": [

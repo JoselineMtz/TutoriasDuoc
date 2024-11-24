@@ -1,8 +1,8 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',   // Asegúrate de que el appId esté en el formato correcto
-  appName: 'MyApp',
+  appId: 'com.example.app',
+  appName: 'ConectaTutor',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {
@@ -13,6 +13,9 @@ const config: CapacitorConfig = {
       androidScaleType: 'CENTER_CROP',
       iosContentMode: 'scaleAspectFill',
     }
+  },
+  server: {
+    cleartext: true, // Si usas HTTP en lugar de HTTPS
   }
 };
 
