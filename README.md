@@ -27,7 +27,7 @@ Funciona de manera local y emula un sistema de tutorías académico.
    ```bash
    npm install -g @ionic/cli
 
-   -----------
+   
 
 
 ## 🛠️ Scripts principales
@@ -45,7 +45,7 @@ Funciona de manera local y emula un sistema de tutorías académico.
   Si enfrentas problemas con el caché, puedes limpiarlo ejecutando los siguientes comandos:
   
   1. **Verifica la ubicación de tu caché actual:** Ejecuta.
-         ```bash
+     ```bash
         npm config get cache
   
   2. **Limpia el caché forzosamente:** Ejecuta.
