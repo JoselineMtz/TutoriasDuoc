@@ -17,6 +17,7 @@ export class EditProfileComponent implements OnInit {
   telefono: string = ''; // Campo de teléfono
   nombreSocial: string = ''; // Campo para el nombre social
   fotoPerfil: string | ArrayBuffer | null = null; // Imagen de perfil
+  apiUrl: string = 'https://d48f8fdf-90f9-4490-8e8b-046ec5c9049c-00-2x3694wobvgbu.kirk.replit.dev'; // URL de la API de Replit
 
   constructor(
     private http: HttpClient,
@@ -25,27 +26,41 @@ export class EditProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('Cargando perfil...');
     this.cargarPerfil();
   }
 
   cargarPerfil() {
     this.limpiarDatosPerfil(); // Limpiar los datos anteriores
-    // Cargar los datos desde el archivo bd.json
-    this.http.get<{ users: any[] }>('assets/bd.json').subscribe(
+  
+    const username = localStorage.getItem('username'); // Obtener el nombre de usuario
+  
+    if (!username) {
+      console.error('No se encontró el nombre de usuario en localStorage');
+      return;
+    }
+  
+    this.http.get(`${this.apiUrl}/users`).subscribe(
       (data) => {
-        const username = localStorage.getItem('username'); // Obtener el nombre de usuario
-        const usuario = data.users.find(user => user.username === username);
-        if (usuario) {
-          this.nombre = usuario.nombre;
-          this.carrera = usuario.carrera;
-          this.jornada = usuario.jornada;
-          this.correo = usuario.correo;
-          this.telefono = usuario.telefono;
-          this.nombreSocial = usuario.nombreSocial;
-          this.fotoPerfil = usuario.foto || null; // Cargar foto si existe, o null si no
-          localStorage.setItem('userId', usuario.id); // Guarda el ID en el localStorage
+        console.log('Respuesta completa de la API:', data); // Verifica la respuesta completa
+  
+        // Verificar la estructura de los datos antes de buscar el usuario
+        if (Array.isArray(data)) {
+          const usuario = data.find(user => user.username === username);
+          if (usuario) {
+            this.nombre = usuario.nombre;
+            this.carrera = usuario.carrera;
+            this.jornada = usuario.jornada;
+            this.correo = usuario.correo;
+            this.telefono = usuario.telefono;
+            this.nombreSocial = usuario.nombreSocial;
+            this.fotoPerfil = usuario.foto || null; // Cargar foto si existe, o null si no
+            localStorage.setItem('userId', usuario.id); // Guarda el ID en el localStorage
+          } else {
+            console.error('Usuario no encontrado');
+          }
         } else {
-          console.error('Usuario no encontrado');
+          console.error('La respuesta de la API no es un array:', data);
         }
       },
       (error) => {
@@ -53,13 +68,24 @@ export class EditProfileComponent implements OnInit {
       }
     );
   }
-
+  
+  cambiarUsuario(nuevoUsername: string) {
+    // Cambiar el nombre de usuario en el localStorage
+    localStorage.setItem('username', nuevoUsername);
+    
+    // Limpiar los datos previos del perfil
+    this.limpiarDatosPerfil();
+  
+    // Volver a cargar el perfil con los datos del nuevo usuario
+    this.cargarPerfil();
+  }
+  
   guardarPerfil() {
     const userId = localStorage.getItem('userId'); // Obtener el ID del usuario desde el localStorage
     const username = localStorage.getItem('username'); // Obtener el nombre de usuario desde el localStorage
 
-    if (!userId) {
-      console.error('ID de usuario no encontrado');
+    if (!userId || !username) {
+      console.error('ID de usuario o nombre de usuario no encontrados');
       return;
     }
 
@@ -81,8 +107,8 @@ export class EditProfileComponent implements OnInit {
       username: username,
     };
 
-    // Hacer una solicitud PUT para actualizar los datos del perfil
-    this.http.put(`http://localhost:3000/users/${userId}`, perfil).subscribe(
+    // Hacer una solicitud PUT para actualizar los datos del perfil en la API de Replit
+    this.http.put(`${this.apiUrl}/users/${userId}`, perfil).subscribe(
       (response) => {
         console.log('Perfil actualizado:', response);
         this.presentToast('Perfil actualizado con éxito.', 3000); // Mensaje de éxito

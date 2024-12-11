@@ -26,6 +26,8 @@ export class SolicitudTutoriaPage implements OnInit {
   solicitanteNombre: string = ''; 
   solicitanteId: string = ''; // Nueva variable para almacenar el ID del solicitante
 
+  private apiUrl = 'https://d48f8fdf-90f9-4490-8e8b-046ec5c9049c-00-2x3694wobvgbu.kirk.replit.dev';
+
   constructor(
     private router: Router,
     private alertController: AlertController,
@@ -98,7 +100,7 @@ export class SolicitudTutoriaPage implements OnInit {
 
     console.log('Solicitud de tutoría:', solicitud);
 
-    this.http.post('http://localhost:3000/solicitudes', solicitud)
+    this.http.post(`${this.apiUrl}/solicitudes`, solicitud)
       .subscribe({
         next: async (response: any) => {
           console.log('Respuesta del servidor:', response);

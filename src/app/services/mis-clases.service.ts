@@ -10,11 +10,14 @@ export class ClasesService {
   private clasesSubject = new BehaviorSubject<any[]>([]);  // Controla las clases
   clases$ = this.clasesSubject.asObservable();
 
+  // URL de Replit
+  private apiUrl = 'https://d48f8fdf-90f9-4490-8e8b-046ec5c9049c-00-2x3694wobvgbu.kirk.replit.dev';
+
   constructor(private http: HttpClient) {}
 
   // Método para cargar las clases
   cargarClases() {
-    this.http.get<any[]>('http://localhost:3000/clases').subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/clases`).subscribe({
       next: (clases) => {
         this.clasesSubject.next(clases); // Emite las clases cargadas
       },
@@ -26,7 +29,7 @@ export class ClasesService {
 
   // Método para agregar una nueva clase
   agregarClase(nuevaClase: any) {
-    this.http.post('http://localhost:3000/clases', nuevaClase).subscribe({
+    this.http.post(`${this.apiUrl}/clases`, nuevaClase).subscribe({
       next: (claseAgregada) => {
         // Actualizamos el BehaviorSubject con la nueva clase
         const clasesActualizadas = [...this.clasesSubject.getValue(), claseAgregada];

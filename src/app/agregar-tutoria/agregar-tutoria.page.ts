@@ -13,6 +13,7 @@ export class AgregarTutoriaPage implements OnInit {
   asignatura: string = '';
   franjaHoraria: string = '';
   tutorId: string = '';  // Añadido para almacenar el userId
+  apiUrl: string = 'https://d48f8fdf-90f9-4490-8e8b-046ec5c9049c-00-2x3694wobvgbu.kirk.replit.dev/'; // URL de la API de Replit
 
   constructor(
     private alertController: AlertController,
@@ -63,7 +64,7 @@ export class AgregarTutoriaPage implements OnInit {
     };
 
     // Enviar la nueva tutoría al servidor
-    this.http.post('http://localhost:3000/tutorias', nuevaTutoria).subscribe({
+    this.http.post(this.apiUrl + 'tutorias', nuevaTutoria).subscribe({
       next: async () => {
         await this.presentAlert('Éxito', 'La tutoría ha sido creada exitosamente.');
         this.resetFormulario();
